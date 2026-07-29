@@ -11,15 +11,17 @@ In Artificial Potential Field planning:
 - The **Goal Position** is modeled as an attractive (negatively charged) field.
 - **Obstacles** are modeled as repulsive (positively charged) potential fields.
 
-The net potential force vector $\vec{F}_{\text{total}} = \vec{F}_{\text{att}} + \vec{F}_{\text{rep}}$ drives the robot towards the target while steering away from surrounding obstacles.
+The net potential force vector `F_total = F_att + F_rep` drives the robot towards the target while steering away from surrounding obstacles.
 
 ### Force Formulations
 
-#### Attractive Force
-$$\vec{F}_{\text{att}}(q) = \begin{cases} -\tau (q - q_{\text{goal}}), & \text{if } d(q, q_{\text{goal}}) \le d^* \\ -\frac{d^* \cdot \tau (q - q_{\text{goal}})}{d(q, q_{\text{goal}})}, & \text{if } d(q, q_{\text{goal}}) > d^* \end{cases}$$
+**Attractive Force:**
+- `F_att(q) = -tau * (q - q_goal)` if `d(q, q_goal) <= d*`
+- `F_att(q) = -d* * tau * (q - q_goal) / d(q, q_goal)` if `d(q, q_goal) > d*`
 
-#### Repulsive Force
-$$\vec{F}_{\text{rep}}(q) = \begin{cases} \eta \left(\frac{1}{D(q)} - \frac{1}{Q^*}\right) \frac{1}{D(q)^2} \nabla D(q), & \text{if } D(q) < Q^* \\ 0, & \text{if } D(q) \ge Q^* \end{cases}$$
+**Repulsive Force:**
+- `F_rep(q) = eta * (1/D(q) - 1/Q*) * (1/D(q))^2 * d'(q)` if `D(q) < Q*`
+- `F_rep(q) = 0` if `D(q) >= Q*`
 
 ---
 
@@ -32,7 +34,7 @@ $$\vec{F}_{\text{rep}}(q) = \begin{cases} \eta \left(\frac{1}{D(q)} - \frac{1}{Q
 
 ---
 
-## Installation & Setup
+## Prerequisites & Setup
 
 Clone the repository and install dependencies:
 
