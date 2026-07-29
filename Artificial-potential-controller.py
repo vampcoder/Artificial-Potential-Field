@@ -24,7 +24,7 @@ def printx(x):
     pass
 
 def check_obstacles(arr, ansx, ansy):  #function to check whether a given point is on obstacle or not
-    if arr[ansx][ansy][0] == 255:
+    if arr[int(ansx)][int(ansy)][0] == 255:
         return True
     else:
         return False
@@ -194,7 +194,7 @@ def path_planning(arr, sx1, sy1, dx, dy, theta):
 
 def show_image(im):
     cv2.imshow('image', im)
-    k = cv2.waitKey(0)
+    k = cv2.waitKey(1)
 
 def find_goal(img):
     # converting to HSV
@@ -253,7 +253,7 @@ def find_goal(img):
 
     cv2.imshow('image', frame)
     cv2.imwrite('goal.jpg', frame)
-    k = cv2.waitKey(0)
+    k = cv2.waitKey(1)
 
     return (int(x), int(y))
 
@@ -293,7 +293,7 @@ def find_robot(frame):
     y = int(y)
     cv2.circle(im, (x, y), 5, (255, 0, 255), 2)
     cv2.imshow('img', im)
-    k = cv2.waitKey(0)
+    k = cv2.waitKey(1)
     cv2.imwrite('robot.jpg', im)
     #show_image(im)
     return (int(x), int(y))
@@ -315,7 +315,7 @@ def classify(img):
     _res = cv2.findContours(t2, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     contours = _res[0] if len(_res) == 2 else _res[1]
     #cv2.imshow('image', image)
-    #k = cv2.waitKey(0)
+    #k = cv2.waitKey(1)
     for i in range(len(contours)):
         cnt = contours[i]
         if cv2.contourArea(cnt) > 3600 and cv2.contourArea(cnt) < 25000:
@@ -323,7 +323,7 @@ def classify(img):
             cv2.fillConvexPoly(arr, cnt, [255, 255, 255])
             final_contours.append(cnt)
     cv2.imshow('arr', arr)
-    k = cv2.waitKey(0)
+    k = cv2.waitKey(1)
     return arr
 
 def negate(arr):
@@ -355,7 +355,7 @@ def main():
     arr = classify(img1)
     arr1 = negate(arr)
     cv2.imshow('arr', arr)
-    k = cv2.waitKey(0)
+    k = cv2.waitKey(1)
     dx, dy = 50, 50
     sx1, sy1 = 500, 1000
     (dy, dx) = find_goal(im)
@@ -400,7 +400,7 @@ def main():
 
     cv2.imwrite('output/2.jpg', input_image)
     cv2.imshow('arr', arr)
-    cv2.waitKey(0)
+    cv2.waitKey(1)
     cv2.destroyAllWindows()
 
 main()

@@ -23,6 +23,15 @@ $$\vec{F}_{\text{rep}}(q) = \begin{cases} \eta \left(\frac{1}{D(q)} - \frac{1}{Q
 
 ---
 
+## Sample Visualizations
+
+| Sample Input Frame | Potential Field Planned Output |
+|---|---|
+| ![Sample Input 1](1.jpg) | ![Planned Output 1](output/1.jpg) |
+| ![Sample Input 2](2.jpg) | ![Planned Output 2](output/2.jpg) |
+
+---
+
 ## Installation & Setup
 
 Clone the repository and install dependencies:

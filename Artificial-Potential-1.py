@@ -119,7 +119,7 @@ def obstacle_force(arr, sx, sy, q_star): #sx,sy :- source    dx, dy:- destinatio
     printx('9')
 
     #cv2.imshow('img1', arr)
-    #cv2.waitKey(0)
+    #cv2.waitKey(1)
     #sleep(20)
 
     return (forcex, forcey)
@@ -326,6 +326,6 @@ def main():
         #draw(math.pi/4, arr)
         cv2.imshow('image', img)
         cv2.imshow('arr', arr)
-        cv2.waitKey(0)
+        cv2.waitKey(1)
         cv2.destroyAllWindows()
 main()

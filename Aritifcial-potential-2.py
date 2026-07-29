@@ -19,7 +19,7 @@ def printx(x):
     pass
 
 def check_obstacles(arr, ansx, ansy):
-    if arr[ansx][ansy][0] == 255:
+    if arr[int(ansx)][int(ansy)][0] == 255:
         return True
     else:
         return False
@@ -220,6 +220,6 @@ def main():
         #draw(math.pi/4, arr)
         cv2.imshow('image', img)
         cv2.imshow('arr', arr)
-        cv2.waitKey(0)
+        cv2.waitKey(1)
         cv2.destroyAllWindows()
 main()

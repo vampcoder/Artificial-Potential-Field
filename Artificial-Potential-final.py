@@ -20,7 +20,7 @@ def printx(x):
     pass
 
 def check_obstacles(arr, ansx, ansy):  #function to check whether a given point is on obstacle or not
-    if arr[ansx][ansy][0] == 255:
+    if arr[int(ansx)][int(ansy)][0] == 255:
         return True
     else:
         return False
@@ -173,7 +173,7 @@ def path_planning(arr, sx1, sy1, dx, dy):
             print(theta1*180/math.pi, theta*180/math.pi)
             cv2.circle(arr, (sy, sx ), 3, (255, 0, 0), 3)
             cv2.imshow('arr', arr)
-            cv2.waitKey(0)
+            cv2.waitKey(1)
 
         P = v
         angle = theta1-theta  #angle between velocity and force vector
@@ -251,7 +251,7 @@ def main():
     cv2.circle(arr1, (sy, sx), 2, (255, 0, 0))
     cv2.circle(arr1, (dy, dx), 2, (255, 0, 0))
     cv2.imshow('arr', arr1)
-    k = cv2.waitKey(0)
+    k = cv2.waitKey(1)
     cv2.destroyWindow('arr')
     sol = path_planning(arr, sx, sy, dx, dy)
     if len(sol) == 0:
@@ -275,6 +275,6 @@ def main():
 
     cv2.imshow('image', img)
     cv2.imshow('arr', arr)
-    cv2.waitKey(0)
+    cv2.waitKey(1)
     cv2.destroyAllWindows()
 main()

@@ -24,7 +24,7 @@ def printx(x):
     pass
 
 def check_obstacles(arr, ansx, ansy):  #function to check whether a given point is on obstacle or not
-    if arr[ansx][ansy][0] == 255:
+    if arr[int(ansx)][int(ansy)][0] == 255:
         return True
     else:
         return False
@@ -90,7 +90,7 @@ def obstacle_force(arr, sx, sy, q_star, theta1): #sx,sy :- source    dx, dy:- de
     arr1 = arr
     #cv2.line(arr1, (sy, sx), (int(sy + 10*math.cos(thet)), int(sx + math.sin(thet))), (0, 255, 255), 1)
     #cv2.imshow('arr', arr1)
-    #k = cv2.waitKey(0)
+    #k = cv2.waitKey(1)
     return (forcex, forcey)
 
 def goal_force(arr, sx, sy, dx, dy, d_star): # sx, sy :- source  dx, dy:- destination   d_star:- threshold distance from goal
@@ -194,7 +194,7 @@ def path_planning(arr, sx1, sy1, dx, dy, theta):
 
 def show_image(im):
     cv2.imshow('image', im)
-    k = cv2.waitKey(0)
+    k = cv2.waitKey(1)
 
 def find_goal(frame):
     # converting to HSV
@@ -252,7 +252,7 @@ def find_goal(frame):
     cv2.circle(frame, (x, y), 5, (255, 0, 255), -1)
 
     #cv2.imshow('image', frame)
-    #k = cv2.waitKey(0)
+    #k = cv2.waitKey(1)
 
     return (int(x), int(y))
 
@@ -310,7 +310,7 @@ def classify(img):
     _res = cv2.findContours(t2, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     contours = _res[0] if len(_res) == 2 else _res[1]
     #cv2.imshow('image', image)
-    #k = cv2.waitKey(0)
+    #k = cv2.waitKey(1)
     for i in range(len(contours)):
         cnt = contours[i]
         if cv2.contourArea(cnt) > 3000 and cv2.contourArea(cnt) < 25000:
@@ -318,7 +318,7 @@ def classify(img):
             cv2.fillConvexPoly(arr, cnt, [255, 255, 255])
             final_contours.append(cnt)
     #cv2.imshow('arr', arr)
-    #k = cv2.waitKey(0)
+    #k = cv2.waitKey(1)
     return arr
 
 def negate(arr):
@@ -350,7 +350,7 @@ def main():
     arr1 = negate(arr)
     #cv2.imshow('classify1', arr)
     #cv2.imshow('classify', arr1)
-    #k = cv2.waitKey(0)
+    #k = cv2.waitKey(1)
 
     (dy, dx) = find_goal(im)
     print('dx ', dx, 'dy ', dy)
@@ -359,11 +359,11 @@ def main():
     print(dy, dx)
     cv2.imshow('arr', arr1)
 
-    k = cv2.waitKey(0)
+    k = cv2.waitKey(1)
 
     _, im = cap.read()
     cv2.imshow('img', im)
-    k = cv2.waitKey(0)
+    k = cv2.waitKey(1)
 
     (sy1, sx1) = find_robot(im)
     cv2.circle(im, (sy1, sx1), 4, (255, 255, 0), 3)
@@ -372,7 +372,7 @@ def main():
     sx2 = 0
     sy2 = 0
     #cv2.imshow('img', im)
-    #k = cv2.waitKey(0)
+    #k = cv2.waitKey(1)
 
 
     connection_bot = conn.socket_connection()
@@ -393,7 +393,7 @@ def main():
 
     cv2.line(im, (sy1, sx1), (int(sy1 + 40*math.cos(direction)), int(sx1 + 40*math.sin(direction))), (255, 0, 0), 3)
     #cv2.imshow('im', im)
-    #k = cv2.waitKey(0)
+    #k = cv2.waitKey(1)
     (sx1, sy1) = (sx2, sy2)
 
     while True:
@@ -442,6 +442,6 @@ def main():
 
     cv2.imshow('image', img)
     cv2.imshow('arr', arr)
-    cv2.waitKey(0)
+    cv2.waitKey(1)
     cv2.destroyAllWindows()
 main()
