@@ -9,7 +9,7 @@ import Connection as conn
 
 cap = cv2.VideoCapture(1)
 
-import Queue as Q
+import queue as Q
 
 images = glob.glob('*.jpg')
 
@@ -157,9 +157,9 @@ def path_planning(arr, sx1, sy1, dx, dy, theta):
     theta1 = math.atan2(tx, ty)
 
     if arr[sx][sy][0] == 255:
-        print gx, gy, fx, fy
-        print 'tx ', tx, ' ty ', ty, 'sx ', sx, ' sy ', sy
-        print theta1*180/math.pi, theta*180/math.pi
+        print(gx, gy, fx, fy)
+        print('tx ', tx, ' ty ', ty, 'sx ', sx, ' sy ', sy)
+        print(theta1*180/math.pi, theta*180/math.pi)
         sleep(10)
 
     P = v
@@ -184,7 +184,7 @@ def path_planning(arr, sx1, sy1, dx, dy, theta):
     sy = int(sy)
 
     if not check_boundaries(x, y, sx, sy):
-        print 'out of boundaries' , sx, sy
+        print('out of boundaries' , sx, sy)
 
     return (sx, sy, theta2)
 
@@ -218,7 +218,8 @@ def find_goal(frame):
 
     perimeter = 0
     j = 0
-    image, contours, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    _res = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    contours = _res[0] if len(_res) == 2 else _res[1]
     # print len(contours)
     # if(len(contours) > 5):
     #    continue
@@ -265,7 +266,8 @@ def find_robot(im):
     th4 = copy.copy(th3)
     perimeter = 0
     j = 0
-    image, contours, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    _res = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    contours = _res[0] if len(_res) == 2 else _res[1]
     cnt = np.array([])
     for i in range(len(contours)):
         if (perimeter < cv2.contourArea(contours[i])):
@@ -301,7 +303,8 @@ def classify(img):
     x, y = thresh1.shape
     arr = np.zeros((x, y, 3), np.uint8)
     final_contours = []
-    image, contours, hierarchy = cv2.findContours(t2, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    _res = cv2.findContours(t2, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours = _res[0] if len(_res) == 2 else _res[1]
     #cv2.imshow('image', image)
     #k = cv2.waitKey(0)
     for i in range(len(contours)):
@@ -337,7 +340,7 @@ def main():
     im = cv2.imread('sample.jpg')
     #_, im = cap.read()
     (x, y, z) = im.shape
-    print x, y, z
+    print(x, y, z)
     img1 = im
     arr = classify(img1)
     arr1 = negate(arr)
@@ -347,30 +350,30 @@ def main():
 
     (dy, dx) = find_goal(im)
     cv2.circle(im, (dy,dx), 4, (255, 255, 255), 3)
-    print 'goal'
-    print dy, dx
+    print('goal')
+    print(dy, dx)
     direction = -math.pi/4
     #_, im = cap.read()
 
     img = im
     (sy2, sx2) = find_robot(im)
-    print sx2, sy2
+    print(sx2, sy2)
 
     if sx2 + 10 > dx and sx2-10 < dx and sy2 + 10 > dy and sy2-10 < dy:
-        print 'reached goal'
+        print('reached goal')
 
     cv2.imwrite('count.bmp', arr1)
 
     cv2.line(im, (sy2, sx2), (int(sy2 + 40 * math.cos(direction)), int(sx2 + 40 * math.sin(direction))), (255, 255, 255), 3)
 
     (x, y, direction) = path_planning(arr, sx2, sy2, dx, dy, direction)
-    #print 'direction  ' +`direction`
+    #print 'direction  ' +str(direction)
     #direction = (direction + 2*math.pi) %(2*math.pi)
     po = []
     po.append([sx2, sy2])
     po.append([x, y])
     direction = getAngle(po, im)
-    print 'direction', direction
+    print('direction', direction)
     direction  = 0
 
     cv2.line(im, (sy2, sx2), (int(sy2 + 40*math.cos(direction)), int(sx2 + 40*math.sin(direction))), (255, 0 , 0), 3)
@@ -382,7 +385,7 @@ def main():
     #cv2.line(img, (sy2, sx2), ())
 
     send_result =  "{:20}".format(direction)
-    #print 'send result ' + `send_result`
+    #print 'send result ' + str(send_result)
     #connection_bot_var.send(send_result)
 
     arr[sx2][sy2] = (0, 255, 255)
@@ -398,7 +401,7 @@ def main():
     '''
     cv2.imshow('img', img)
     cv2.waitKey(0)
-    print sx2, sy2, x, y, dx, dy, direction*180/math.pi
+    print(sx2, sy2, x, y, dx, dy, direction*180/math.pi)
     (sx1, sy1) = (sx2, sy2)
 
     cv2.imshow('image', img)

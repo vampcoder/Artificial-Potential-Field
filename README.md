@@ -1,39 +1,54 @@
-# Artificial-Potential-Field
-<b>Implementation of Artificial Potential Field (Reactive Method of Motion Planing) </b>
+# Artificial Potential Field Motion Planning
 
-For basics and working of Potential Field Motion Planning one can refer to http://www.cs.cmu.edu/~motionplanning/lecture/Chap4-Potential-Field_howie.pdf
+Implementation of the **Artificial Potential Field (APF)** reactive method for mobile robot motion planning and obstacle avoidance.
 
-This is basic implementation of potential field motion planning. Here we condsider our bot as positively charged body and goal as a negatively charged body and all obstacles as positively charge bodies. 
-This way goal will attracts bot but obstacles will repel it from itself. Hence bot will reach to goal avoiding obstacles in these different potential fields.
+---
 
+## Concept Overview
+
+In Artificial Potential Field planning:
+- The **Robot** is modeled as a positively charged particle.
+- The **Goal Position** is modeled as an attractive (negatively charged) field.
+- **Obstacles** are modeled as repulsive (positively charged) potential fields.
+
+The net potential force vector $\vec{F}_{\text{total}} = \vec{F}_{\text{att}} + \vec{F}_{\text{rep}}$ drives the robot towards the target while steering away from surrounding obstacles.
+
+### Force Formulations
+
+#### Attractive Force
+$$\vec{F}_{\text{att}}(q) = \begin{cases} -\tau (q - q_{\text{goal}}), & \text{if } d(q, q_{\text{goal}}) \le d^* \\ -\frac{d^* \cdot \tau (q - q_{\text{goal}})}{d(q, q_{\text{goal}})}, & \text{if } d(q, q_{\text{goal}}) > d^* \end{cases}$$
+
+#### Repulsive Force
+$$\vec{F}_{\text{rep}}(q) = \begin{cases} \eta \left(\frac{1}{D(q)} - \frac{1}{Q^*}\right) \frac{1}{D(q)^2} \nabla D(q), & \text{if } D(q) < Q^* \\ 0, & \text{if } D(q) \ge Q^* \end{cases}$$
+
+---
+
+## Installation & Setup
+
+Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/vampcoder/Artificial-Potential-Field.git
+cd Artificial-Potential-Field
+pip install -r requirements.txt
 ```
-Attractive force = 
-- tau(q(current) -q(goal)), if d(q(current), d(q(goal), q(current)) <= d*
-- d*(tau*(q(current)-q(goal)))/d(q(current), q(goal)), if d(q(goal), q(current)) > d*
 
-Repulsive Force =
-- n(1/Q* - 1/D(q))*(1/D(q))^2* d'(q), if D(q) < Q*
-- 0, if D(q) >= Q*
+---
+
+## Execution
+
+Run the potential field motion planning simulations:
+
+```bash
+# Main Artificial Potential Field Simulation
+python3 Artificial-Potential-final.py
+
+# Potential Field Controller Simulation
+python3 Artificial-potential-controller.py
 ```
 
-<b> Prerequisites</b>
-- Python
-- OpenCV
-- Numpy
-- Matplotlib
+---
 
-<b> Input Images </b>
-It will take all images in root folder as input images.
+## License
 
-Sample Input Images:
-
-![Alt text](1.jpg?raw=true "Sample Image")
-
-![Alt text](2.jpg?raw=true "Sample Image")
-
-Output Images:
-
-![Alt text](output/1.jpg?raw=true "Sample Image")
-
-![Alt text](output/2.jpg?raw=true "Sample Image")
-
+MIT License

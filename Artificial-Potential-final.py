@@ -5,7 +5,7 @@ import glob
 import math
 import time
 from time import sleep
-import Queue as Q
+import queue as Q
 
 images = glob.glob('*.jpg')
 
@@ -151,7 +151,7 @@ def path_planning(arr, sx1, sy1, dx, dy):
         #count += 1
         (fx, fy) = obstacle_force(arr, sx, sy, q_star)
         (gx, gy) = goal_force(arr, sx, sy, dx, dy, d_star)
-        print 'fx ', fx, ' fy ', fy, ' gx ', gx, ' gy ', gy
+        print('fx ', fx, ' fy ', fy, ' gx ', gx, ' gy ', gy)
 
         tx = gx+fx
         ty = gy+fy
@@ -164,13 +164,13 @@ def path_planning(arr, sx1, sy1, dx, dy):
         else:
             ty = min(ty, fly)
 
-        print 'tx ', tx, ' ty ', ty
+        print('tx ', tx, ' ty ', ty)
         theta1 = math.atan2(tx, ty)
         cv2.circle(arr, (sy, sx), 3, (255, 0, 0), 3)
         if arr[sx][sy][0] == 255:
-            print gx, gy, fx, fy
-            print 'tx ', tx, ' ty ', ty, 'sx ', sx, ' sy ', sy
-            print theta1*180/math.pi, theta*180/math.pi
+            print(gx, gy, fx, fy)
+            print('tx ', tx, ' ty ', ty, 'sx ', sx, ' sy ', sy)
+            print(theta1*180/math.pi, theta*180/math.pi)
             cv2.circle(arr, (sy, sx ), 3, (255, 0, 0), 3)
             cv2.imshow('arr', arr)
             cv2.waitKey(0)
@@ -197,7 +197,7 @@ def path_planning(arr, sx1, sy1, dx, dy):
         sy = int(sy)
 
         if not check_boundaries(x, y, sx, sy):
-            print 'out of boundaries' , sx, sy
+            print('out of boundaries' , sx, sy)
             return sol
 
         if sx < dx+ 5 and sx > dx - 5 and sy < dy+5 and sy > dy-5:
@@ -221,10 +221,11 @@ def main():
     t2 = copy.copy(thresh1)
 
     x, y  = thresh1.shape
-    print 'x ', x , ' y ', y
+    print('x ', x , ' y ', y)
     arr = np.zeros((x, y, 3), np.uint8)
     final_contours= []
-    image, contours, hierarchy = cv2.findContours(t2,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+    _res = cv2.findContours(t2,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+    contours = _res[0] if len(_res) == 2 else _res[1]
     for i in range(len(contours)):
         cnt = contours[i]
         if cv2.contourArea(cnt) > 4000 and cv2.contourArea(cnt) < 15000 :
@@ -246,7 +247,7 @@ def main():
     sy = 300
     dx = 60
     dy = 300
-    start = time.clock()
+    start = time.perf_counter()
     cv2.circle(arr1, (sy, sx), 2, (255, 0, 0))
     cv2.circle(arr1, (dy, dx), 2, (255, 0, 0))
     cv2.imshow('arr', arr1)
@@ -254,19 +255,19 @@ def main():
     cv2.destroyWindow('arr')
     sol = path_planning(arr, sx, sy, dx, dy)
     if len(sol) == 0:
-        print 'No solution exist '
+        print('No solution exist ')
         #continue
     for i in range(len(sol)):
         start = (sol[i][1], sol[i][0])
         cv2.circle(arr,start, 1, [255, 255, 255])
         cv2.circle(img, start, 1, [255, 255, 255])
 
-    #print 'time: ',  time.clock()-start
+    #print 'time: ',  time.perf_counter()-start
 
     arr[sx][sy] = (0, 255, 255)
     arr[dx][dy] = (0, 255, 255)
 
-    output = "output/"+`counter`
+    output = "output/"+str(counter)
     output += ".jpg"
     cv2.imwrite(output, img)
     counter += 1

@@ -139,7 +139,7 @@ def path(arr, sx, sy, dx, dy):
         rspeed = max(rspeed, 0)
 
         if rspeed == 0:
-            print 'Robot can\'t move'
+            print('Robot can\'t move')
             return sol
 
         #calculatig new positions
@@ -148,7 +148,7 @@ def path(arr, sx, sy, dx, dy):
 
         if not feasible(arr, cx, cy):
             sol.append((int(cx), int(cy)))
-            print 'robot collides'
+            print('robot collides')
             return sol
 
         sol.append((int(cx), int(cy)))
@@ -168,17 +168,18 @@ def main():
         t2 = copy.copy(thresh1)
 
         x, y  = thresh1.shape
-        print x, y
+        print(x, y)
         arr = np.zeros((x, y, 3), np.uint8)
         final_contours= []
-        image, contours, hierarchy = cv2.findContours(t2,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+        _res = cv2.findContours(t2,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+        contours = _res[0] if len(_res) == 2 else _res[1]
         for i in range(len(contours)):
             cnt = contours[i]
             if cv2.contourArea(cnt) > 300 and cv2.contourArea(cnt) < 5000 :
                 cv2.drawContours(img, [cnt],-1, [0, 255, 255])
                 cv2.fillConvexPoly(arr, cnt, [255, 255, 255])
                 final_contours.append(cnt)
-        print '1'
+        print('1')
         arr1 = np.zeros((x, y, 3), np.uint8)
         for i in range(x):
             for j in range(y):
@@ -195,21 +196,21 @@ def main():
         dy = 200
 
         cmax = 50
-        start = time.clock()
+        start = time.perf_counter()
         #sol = path_planning(arr, sx, sy, dx, dy)
         sol = path(arr, sx, sy, dx, dy)
         #sol = [(100, 100),(100, 103), (100, 106), (100, 109), (100, 112), (100, 115)]
         if len(sol) == 0:
-            print 'No solution exist '
+            print('No solution exist ')
             continue
-        print '2'
+        print('2')
         for i in sol:
         #    print arr[i[0],  i[1]]
           #  print i[0], i[1]
             arr[i[0], i[1]] = (255, 255, 0)
             img[i[0], i[1]] = (255, 0, 255)
 
-        print 'time: ',  time.clock()-start
+        print('time: ',  time.perf_counter()-start)
         arr[sx][sy] = (0, 255, 255)
         arr[dx][dy] = (0, 255, 255)
        # cv2.circle(arr, (sol[len(sol)-1][1], sol[len(sol)-1][0]), 5, (0, 0, 255))

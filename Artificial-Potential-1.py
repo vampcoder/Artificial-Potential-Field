@@ -5,7 +5,7 @@ import glob
 import math
 import time
 from time import sleep
-import Queue as Q
+import queue as Q
 
 class pixel(object):
     def __init__(self, penalty, pointx, pointy): # parent is that pixel from which this current pixel is generated
@@ -32,7 +32,7 @@ def printx(x):
     pass
 
 def check_obstacles(arr, ansx, ansy):
-    if arr[ansx][ansy][0] == 255:
+    if arr[int(ansx)][int(ansy)][0] == 255:
         return True
     else:
         return False
@@ -191,12 +191,12 @@ def path_planning(arr, sx1, sy1, dx, dy):
         theta1 = math.atan2(tx, ty)
         #tx *= -1
         #ty *= -1
-        print sx, sy, gx, gy, fx, fy, tx, ty
+        print(sx, sy, gx, gy, fx, fy, tx, ty)
 
         if arr[sx][sy][0] == 255:
-            print gx, gy, fx, fy
-            print 'tx ', tx, ' ty ', ty, 'sx ', sx, ' sy ', sy
-            print theta1*180/math.pi, theta*180/math.pi
+            print(gx, gy, fx, fy)
+            print('tx ', tx, ' ty ', ty, 'sx ', sx, ' sy ', sy)
+            print(theta1*180/math.pi, theta*180/math.pi)
             sleep(10)
 
         #theta1 = math.atan2(tx, ty)
@@ -236,7 +236,7 @@ def path_planning(arr, sx1, sy1, dx, dy):
         '''
       #  print theta
         if not check_boundaries(x, y, sx, sy):
-            print 'out of boundaries' , sx, sy
+            print('out of boundaries' , sx, sy)
             return sol
 
         if sx < dx+ 10 and sx > dx - 10 and sy < dy+10 and sy > dy-10:
@@ -271,17 +271,18 @@ def main():
         t2 = copy.copy(thresh1)
 
         x, y  = thresh1.shape
-        print x, y
+        print(x, y)
         arr = np.zeros((x, y, 3), np.uint8)
         final_contours= []
-        image, contours, hierarchy = cv2.findContours(t2,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+        _res = cv2.findContours(t2,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+        contours = _res[0] if len(_res) == 2 else _res[1]
         for i in range(len(contours)):
             cnt = contours[i]
             if cv2.contourArea(cnt) > 300 and cv2.contourArea(cnt) < 5000 :
                 cv2.drawContours(img, [cnt],-1, [0, 255, 255])
                 cv2.fillConvexPoly(arr, cnt, [255, 255, 255])
                 final_contours.append(cnt)
-        print '1'
+        print('1')
         arr1 = np.zeros((x, y, 3), np.uint8)
         for i in range(x):
             for j in range(y):
@@ -298,14 +299,14 @@ def main():
         dy = 200
 
         cmax = 50
-        start = time.clock()
+        start = time.perf_counter()
         sol = path_planning(arr, sx, sy, dx, dy)
         #sol = path(arr, sx, sy, dx, dy)
         #sol = [(100, 100),(100, 103), (100, 106), (100, 109), (100, 112), (100, 115)]
         if len(sol) == 0:
-            print 'No solution exist '
+            print('No solution exist ')
             continue
-        print '2'
+        print('2')
         for i in sol:
         #    print arr[i[0],  i[1]]
             #
@@ -315,7 +316,7 @@ def main():
             arr[i[0], i[1]] = (255, 255, 0)
             img[i[0], i[1]] = (255, 0, 255)
 
-        print 'time: ',  time.clock()-start
+        print('time: ',  time.perf_counter()-start)
         arr[sx][sy] = (0, 255, 255)
         arr[dx][dy] = (0, 255, 255)
        # cv2.circle(arr, (sol[len(sol)-1][1], sol[len(sol)-1][0]), 5, (0, 0, 255))
